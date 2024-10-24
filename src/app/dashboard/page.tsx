@@ -7,11 +7,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { db } from "@/db";
+import { Invoice } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import Link from "next/link";
-export default function Home() {
+export default async function Home() {
+  const result = await db.select().from(Invoice);
   return (
     <main className="flex flex-col  h-full text-center max-w-5xl mx-auto gap-6 my-12">
       <div className="flex items-center justify-between">
@@ -35,17 +38,33 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow className="text-left ">
-            <TableCell className="p-4 font-semibold">10/10/2023</TableCell>
-            <TableCell className="p-4 font-semibold">Punit R. Mistry</TableCell>
-            <TableCell>punit@gmail.com</TableCell>
-            <TableCell>
-              <Badge className="rounded-full">Open</Badge>
-            </TableCell>
-            <TableCell className="p-4 text-right font-semibold">
-              $250.00
-            </TableCell>
-          </TableRow>
+          {result.map((result) => {
+            return (
+              <TableRow className="text-left " key={result.id}>
+                <TableCell className="p-4 font-semibold">
+                  <Link href={`/invoices/${result.id}`}>
+                    {new Date(result.createTs).toLocaleDateString()}
+                  </Link>
+                </TableCell>
+                <TableCell className="p-4 font-semibold">
+                  <Link href={`/invoices/${result.id}`}>Punit R. Mistry</Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/invoices/${result.id}`}>punit@gmail.com</Link>
+                </TableCell>
+                <TableCell>
+                  <Badge className="rounded-full">
+                    <Link href={`/invoices/${result.id}`}>{result.status}</Link>
+                  </Badge>
+                </TableCell>
+                <TableCell className="p-4 text-right font-semibold">
+                  <Link href={`/invoices/${result.id}`}>
+                    {(result.value / 100).toFixed(2)}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </main>
