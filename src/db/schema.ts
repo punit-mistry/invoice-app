@@ -11,7 +11,7 @@ export const statusEnum = pgEnum("status", [
   "open",
   "paid",
   "void",
-  "uncollected",
+  "uncollectible",
 ]);
 
 export const Invoice = pgTable("invoices", {
