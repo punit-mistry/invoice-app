@@ -12,6 +12,5 @@ export async function createAction(formData: FormData) {
   }).returning({
     id:Invoice.id,
   })
-  console.log(result);
   return redirect (`/invoices/${result[0].id}`);
 }

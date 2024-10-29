@@ -14,10 +14,13 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Container from "@/components/Container";
 export default async function Home() {
   const result = await db.select().from(Invoice);
   return (
-    <main className="flex flex-col  h-full text-center max-w-5xl mx-auto gap-6 my-12">
+    <main className=" text-center  my-12">
+      <Container>
+
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold">Inovices </h1>
         <Button variant={"ghost"} className="gap-2 inline-flex" asChild>
@@ -68,7 +71,7 @@ export default async function Home() {
                 </TableCell>
                 <TableCell className="p-4 text-right font-semibold">
                   <Link href={`/invoices/${result.id}`}>
-                    {(result.value / 100).toFixed(2)}
+                  ₹ {(result.value / 100).toFixed(2)}
                   </Link>
                 </TableCell>
               </TableRow>
@@ -76,6 +79,8 @@ export default async function Home() {
           })}
         </TableBody>
       </Table>
+      </Container>
+
     </main>
   );
 }

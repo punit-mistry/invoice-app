@@ -1,16 +1,20 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+// import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-const isProtected = createRouteMatcher([
-  '/dashboard',
-  '/invoices/:invoiceId',
-  '/invoices/new'
+const isPublic = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
 ])
+// const isProtected = createRouteMatcher([
+//   '/dashboard',
+//   '/invoices/:invoiceId',
+//   '/invoices/new'
+// ])
 
-export default clerkMiddleware((auth, request) => {
-    if (!isProtected(request)) {
-    //   auth().protect();
-    }
-  });
+export default clerkMiddleware(async (auth, request) => {
+  if (!isPublic(request)) await auth.protect()
+})
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SubmitButton from "@/components/SubmitButton";
 import { Textarea } from "@/components/ui/textarea";
+import Container from "@/components/Container";
 export default function Home() {
   const [state, setState] = useState("ready");
   const handleSubmit = async (event: SyntheticEvent) => {
@@ -16,8 +17,9 @@ export default function Home() {
     setState("pending");
   };
   return (
-    <main className="flex flex-col  h-full  max-w-5xl mx-auto gap-6 my-12">
-      <div className="flex items-center justify-between">
+    <main className="  h-full  ">
+      <Container className="my-12">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-semibold">Create Inovice </h1>
       </div>
       <Form className="grid gap-4 max-w-xs" action={createAction} onSubmit={handleSubmit}>
@@ -71,6 +73,8 @@ export default function Home() {
           <SubmitButton />
         </div>
       </Form>
+      </Container>
+
     </main>
   );
 }
