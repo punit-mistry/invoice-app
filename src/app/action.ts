@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/db";
-import { Invoice, Status } from "@/db/schema";
+import { Invoice, Status ,Customers} from "@/db/schema";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
@@ -9,15 +9,30 @@ export async function createAction(formData: FormData) {
   const { userId } = await auth();
   const value = Math.floor(parseFloat(String(formData.get("value"))) * 100);
   const description = formData.get("description") as string;
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
   if (!userId) {
     return redirect("/sign-in");
   }
+  const [customer] = await db
+  .insert(Customers)
+  .values({
+    name,
+    email,
+    userId,
+    // organizationId: orgId || null,
+  })
+  .returning({
+    id: Customers.id,
+  });
+
   const result = await db
     .insert(Invoice)
     .values({
       value,
       status: "open",
       description,
+      customerId: customer.id,
       userId,
     })
     .returning({

@@ -8,6 +8,13 @@
       "when": 1730960098698,
       "tag": "0000_odd_mauler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1730962064847,
+      "tag": "0001_glamorous_ultimates",
+      "breakpoints": true
     }
   ]
 }
