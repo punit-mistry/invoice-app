@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 export async function createAction(formData: FormData) {
-  const { userId } = await auth();
+  const { userId,orgId } = await auth();
   const value = Math.floor(parseFloat(String(formData.get("value"))) * 100);
   const description = formData.get("description") as string;
   const name = formData.get("name") as string;
@@ -20,7 +20,7 @@ export async function createAction(formData: FormData) {
     name,
     email,
     userId,
-    // organizationId: orgId || null,
+    organizationId: orgId || null,
   })
   .returning({
     id: Customers.id,
@@ -34,6 +34,7 @@ export async function createAction(formData: FormData) {
       description,
       customerId: customer.id,
       userId,
+    organizationId: orgId || null,
     })
     .returning({
       id: Invoice.id,

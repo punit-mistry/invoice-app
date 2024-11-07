@@ -19,7 +19,7 @@ const Header = () => {
           /
           <div>
             <SignedIn>
-              <OrganizationSwitcher hidePersonal afterCreateOrganizationUrl={"/dashboard"} />
+              <OrganizationSwitcher hidePersonal afterCreateOrganizationUrl={"/dashboard"} afterSelectOrganizationUrl={'/dashboard'} />
             </SignedIn>
           </div>
         </div>
