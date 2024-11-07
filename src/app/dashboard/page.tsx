@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { db } from "@/db";
+import { auth } from "@clerk/nextjs/server";
 import { Invoice } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,8 +16,13 @@ import { CirclePlus } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
+import { eq } from "drizzle-orm";
 export default async function Home() {
-  const result = await db.select().from(Invoice);
+  const { userId } = await auth();
+  if (!userId) {
+    return null;
+  }
+  const result = await db.select().from(Invoice).where(eq(Invoice.userId, userId));
   return (
     <main className=" text-center  my-12">
       <Container>

@@ -1,5 +1,5 @@
 {
-  "id": "a79cff2f-fb70-4195-953c-131024a84c20",
+  "id": "14323a47-7159-497b-aeb8-112427defc2c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -21,13 +21,6 @@
           "notNull": true,
           "default": "now()"
         },
-        "status": {
-          "name": "status",
-          "type": "status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
         "value": {
           "name": "value",
           "type": "integer",
@@ -37,6 +30,19 @@
         "description": {
           "name": "description",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         }
@@ -56,7 +62,7 @@
         "open",
         "paid",
         "void",
-        "uncollected"
+        "uncollectible"
       ]
     }
   },
