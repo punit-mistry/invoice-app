@@ -8,7 +8,9 @@ import { auth } from "@clerk/nextjs/server";
 import { and, eq, isNull } from "drizzle-orm";
 import { Invoice, Status, Customers } from "@/db/schema";
 import { headers } from "next/headers";
-
+import { Resend } from "resend";
+import { InvoiceCreatedEmail } from "@/email/invoice-create-email";
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_EMAIL_API);
 dotenv.config({
   path: "./.env.local",
 });
@@ -47,6 +49,18 @@ export async function createAction(formData: FormData) {
     .returning({
       id: Invoice.id,
     });
+  const { data, error } = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: [email],
+    subject: "You have a new invoice !!",
+    react: InvoiceCreatedEmail({ invoiceId: result[0].id }),
+  });
+  // if (error) {
+  //   return res.status(400).json(error);
+  // }
+
+  // res.status(200).json(data);
+
   return redirect(`/invoices/${result[0].id}`);
 }
 
@@ -150,32 +164,36 @@ export const createPaymentAction = async (formData: FormData) => {
   const origin = headersList.get("origin");
   const id = parseInt(formData.get("id") as string);
   const [result] = await db
-    .select({ status: Invoice.status, value: Invoice.value,name:Customers.name })
+    .select({
+      status: Invoice.status,
+      value: Invoice.value,
+      name: Customers.name,
+    })
     .from(Invoice)
     .innerJoin(Customers, eq(Invoice.customerId, Customers.id))
     .where(eq(Invoice.id, id))
     .limit(1);
-console.log(result,"result");
+  console.log(result, "result");
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price_data:{
-          currency: 'inr',
-          product: 'prod_RAnhl3gsHWwfzy',
+        price_data: {
+          currency: "inr",
+          product: "prod_RAnhl3gsHWwfzy",
           unit_amount: result.value,
         },
         quantity: 1,
       },
     ],
     shipping_address_collection: {
-      allowed_countries: ['IN'], // Specify allowed countries (e.g., India)
+      allowed_countries: ["IN"], // Specify allowed countries (e.g., India)
     },
-    mode: 'payment',
+    mode: "payment",
     success_url: `${origin}/invoices/${id}/payment/?status=success&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/invoices/${id}/payment?status=canceled&session_id={CHECKOUT_SESSION_ID}`,
   });
-  if(!session.url){
+  if (!session.url) {
     throw new Error("Error in creating payment");
   }
   return redirect(session.url);

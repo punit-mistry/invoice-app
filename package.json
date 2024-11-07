@@ -8,7 +8,8 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "email":"email dev --dir ./src/email"
   },
   "dependencies": {
     "@clerk/elements": "^0.18.5",
@@ -18,6 +19,7 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@react-email/components": "^0.0.27",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
@@ -27,6 +29,7 @@
     "pg": "^8.13.0",
     "react": "^19.0.0-rc-1631855f-20241023",
     "react-dom": "^19.0.0-rc-1631855f-20241023",
+    "resend": "^4.0.1-alpha.0",
     "stripe": "^17.3.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
