@@ -8,14 +8,14 @@ import InvoiceComponent  from './Invoice'
 export default async function InovicePage({
   params,
 }: {
-  params: { InvoicesId: string };
+  params: { invoicesId: string };
 }) {
   const { userId,orgId } = await auth();
   if (!userId) {
     return null;
   }
-  const { InvoicesId } = await params;
-  if (isNaN(parseInt(InvoicesId))) throw new Error("Invalid Invoice Id");
+  const { invoicesId } = await params;
+  if (isNaN(parseInt(invoicesId))) throw new Error("Invalid Invoice Id");
   let result;
   if (orgId) {
     [result] = await db
@@ -24,7 +24,7 @@ export default async function InovicePage({
       .innerJoin(Customers, eq(Invoice.customerId, Customers.id))
       .where(
         and(
-          eq(Invoice.id, parseInt(InvoicesId)),
+          eq(Invoice.id, parseInt(invoicesId)),
           eq(Invoice.userId, userId),
           eq(Invoice.organizationId, orgId)
         )
@@ -37,7 +37,7 @@ export default async function InovicePage({
       .innerJoin(Customers, eq(Invoice.customerId, Customers.id))
       .where(
         and(
-          eq(Invoice.id, parseInt(InvoicesId)),
+          eq(Invoice.id, parseInt(invoicesId)),
           eq(Invoice.userId, userId),
           isNull(Invoice.organizationId)
         )

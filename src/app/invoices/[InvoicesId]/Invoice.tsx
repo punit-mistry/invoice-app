@@ -2,7 +2,7 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import Container from "@/components/Container";
-import { ChevronDown, Trash2, Ellipsis } from "lucide-react";
+import { ChevronDown, Trash2, Ellipsis, CreditCard } from "lucide-react";
 import { Status } from "@/db/schema";
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 interface Customer {
   id: number;
   createTs: any;
@@ -94,9 +95,16 @@ const Invoice = ({ result }: { result: Invoice }) => {
                 <DropdownMenuContent>
                   <DropdownMenuItem className="text-red-500">
                     <DialogTrigger className="flex items-center gap-1">
+                      <button  className="flex items-center gap-1">
                       <Trash2 className="w-4 h-auto" />
-                      <button>Delete Invoice</button>
+                        Delete Invoice</button>
                     </DialogTrigger>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem >
+                    <Link  href={`/invoices/${result.id}/payment`}  className="flex items-center gap-1">
+                      <CreditCard className="w-4 h-auto" />
+                      <button>Payment</button>
+                    </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
