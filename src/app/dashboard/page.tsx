@@ -42,7 +42,7 @@ export default async function Home() {
       );
   }
 
-  const invoices = result.map(({ invoices, customers }: any) => {
+  const invoices = result.map(({ invoices, customers }) => {
     return {
       ...invoices,
       customers,
@@ -72,7 +72,7 @@ export default async function Home() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoices.map((result: any) => {
+            {invoices.map((result) => {
               return (
                 <TableRow className="text-left " key={result.id}>
                   <TableCell className="p-4 font-semibold">

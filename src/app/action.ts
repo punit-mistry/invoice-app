@@ -49,12 +49,13 @@ export async function createAction(formData: FormData) {
     .returning({
       id: Invoice.id,
     });
-  const { data, error } = await resend.emails.send({
+  const emailResult= await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: [email],
     subject: "You have a new invoice !!",
     react: InvoiceCreatedEmail({ invoiceId: result[0].id }),
   });
+  console.log(emailResult);
   // if (error) {
   //   return res.status(400).json(error);
   // }
@@ -159,7 +160,6 @@ export const deleteAction = async (formData: FormData) => {
 };
 
 export const createPaymentAction = async (formData: FormData) => {
-  const { userId, orgId } = await auth();
   const headersList = await headers();
   const origin = headersList.get("origin");
   const id = parseInt(formData.get("id") as string);
@@ -173,7 +173,6 @@ export const createPaymentAction = async (formData: FormData) => {
     .innerJoin(Customers, eq(Invoice.customerId, Customers.id))
     .where(eq(Invoice.id, id))
     .limit(1);
-  console.log(result, "result");
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {

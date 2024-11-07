@@ -28,13 +28,13 @@ import {
 import Link from "next/link";
 interface Customer {
   id: number;
-  createTs: any;
+  createTs: Date;
   name: string;
   email: string;
 }
 interface Invoice {
   id: number;
-  createTs: any;
+  createTs: Date;
   value: number;
   description: string;
   status: Status;

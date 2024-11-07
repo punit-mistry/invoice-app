@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { Check, CreditCard } from "lucide-react";
+import {  CreditCard } from "lucide-react";
 import Stripe from "stripe";
 
 import Container from "@/components/Container";
