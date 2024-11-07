@@ -10,7 +10,7 @@ const Header = () => {
       <header className="flex items-center justify-between py-4 ">
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href="/dashboard"
             className="font-bold flex gap-3 items-center text-md  capitalize "
           >
             <ReceiptIndianRupee />
@@ -19,7 +19,7 @@ const Header = () => {
           /
           <div>
             <SignedIn>
-              <OrganizationSwitcher hidePersonal afterCreateOrganizationUrl={"/dashboard"} afterSelectOrganizationUrl={'/dashboard'} />
+              <OrganizationSwitcher  afterCreateOrganizationUrl={"/dashboard"} afterSelectOrganizationUrl="/dashboard" /> 
             </SignedIn>
           </div>
         </div>
