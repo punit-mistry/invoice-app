@@ -1,22 +1,23 @@
-
 import { db } from "@/db";
 import { notFound } from "next/navigation";
 import { Customers, Invoice } from "@/db/schema";
 import { eq, and, isNull } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
-import InvoiceComponent  from './Invoice'
-export default async function InovicePage({
-  params,
-}: {
-  params: { invoicesId: string };
-}) {
-  const { userId,orgId } = await auth();
-  if (!userId) {
-    return null;
+import InvoiceComponent from "./Invoice";
+
+type Params = Promise<{ invoicesId: string }>
+// Use `Promise<JSX.Element>` for the async component return type
+export default async function InvoicePage(props:  { params: Params }) {
+  const { userId, orgId } = await auth();
+  if (userId === null || userId === undefined) {
+    throw new Error("User ID cannot be null or undefined");
   }
-  const { invoicesId } = await params;
+
+  const { invoicesId } = await props.params;
   if (isNaN(parseInt(invoicesId))) throw new Error("Invalid Invoice Id");
+
   let result;
+
   if (orgId) {
     [result] = await db
       .select()
@@ -44,10 +45,10 @@ export default async function InovicePage({
       )
       .limit(1);
   }
- 
-  if (!result) notFound();
-  const invoices = { ...result.invoices, customers: result.customers };
-  return (
-    <InvoiceComponent result={invoices} />
-  );
+
+  if (!result) throw notFound();
+  // Extract invoices and customers safely
+  const invoices = {...result.invoices , customers: result.customers};
+
+  return <InvoiceComponent result={invoices } />;
 }

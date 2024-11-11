@@ -40,7 +40,10 @@ interface Invoice {
   status: Status;
   customers: Customer;
 }
-const Invoice = ({ result }: { result: Invoice }) => {
+interface InvoiceProps {
+  result: any;
+}
+const Invoice:React.FC<InvoiceProps>  = ({ result }) => {
   return (
     <main className="w-full h-full my-12">
       <Container>
@@ -131,7 +134,7 @@ const Invoice = ({ result }: { result: Invoice }) => {
 
         <p className="text-lg mb-8">{result.description}</p>
 
-        <h2 className="font-bold text-lg mb-4">Billing Details</h2>
+        <h2 className="font-bold text-lg mb-4">Billing Details </h2>
 
         <ul className="grid gap-2">
           <li className="flex gap-4">
@@ -150,13 +153,13 @@ const Invoice = ({ result }: { result: Invoice }) => {
             <strong className="block w-28 flex-shrink-0 font-medium text-sm">
               Billing Name
             </strong>
-            {result.customers.name}
+            {result?.customers?.name || 'N/a'}
           </li>
           <li className="flex gap-4">
             <strong className="block w-28 flex-shrink-0 font-medium text-sm">
               Billing Email
             </strong>
-            <span>{result.customers.email}</span>
+            <span>{result?.customers?.email || 'N/a'}</span>
           </li>
         </ul>
       </Container>

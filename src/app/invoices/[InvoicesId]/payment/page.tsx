@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import {  CreditCard } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import Stripe from "stripe";
 
 import Container from "@/components/Container";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import InvoicePaid from "./InvoicePaid";
 import { db } from "@/db";
 import { notFound } from "next/navigation";
-import { createPaymentAction,updateStatusAction } from "@/app/action";
+import { createPaymentAction, updateStatusAction } from "@/app/action";
 
 const stripe = new Stripe(String(process.env.NEXT_PUBLIC_STRIPE_KEY));
 
@@ -18,17 +18,22 @@ interface InvoicePageProps {
   params: { invoicesId: string };
   searchParams: Promise<{ status: string; session_id: string }>; // Updated to reflect the promise type
 }
+// After
+type Params = Promise<{ invoicesId: string }>;
+type SearchParams = Promise<{ session_id: string; status: string }>;
 
-export default async function InvoicePage({
-  params,
-  searchParams,
-}: InvoicePageProps) {
-  const InvoiceId = await params;
+export default async function InvoicePage(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const InvoiceId = await props.params;
   const invoicesId = Number(InvoiceId.invoicesId);
-  const searchParamsResolved = await searchParams; // Await the promise to get actual search parameters
+  const searchParamsResolved = await props.searchParams; // Await the promise to get actual search parameters
   const sessionId = searchParamsResolved.session_id;
 
-  const isSuccess = searchParamsResolved.session_id && searchParamsResolved.status === "success";
+  const isSuccess =
+    searchParamsResolved.session_id &&
+    searchParamsResolved.status === "success";
   const isCanceled = searchParamsResolved.status === "canceled";
   let isError = searchParamsResolved.status && !searchParamsResolved.session_id;
 
@@ -37,7 +42,9 @@ export default async function InvoicePage({
   }
 
   if (isSuccess) {
-    const { payment_status } = await stripe.checkout.sessions.retrieve(sessionId);
+    const { payment_status } = await stripe.checkout.sessions.retrieve(
+      sessionId
+    );
 
     if (payment_status !== "paid") {
       isError = true;
