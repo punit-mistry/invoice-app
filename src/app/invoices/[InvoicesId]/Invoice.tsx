@@ -41,7 +41,7 @@ interface Invoice {
   customers: Customer;
 }
 interface InvoiceProps {
-  result: any;
+  result: Invoice;
 }
 const Invoice:React.FC<InvoiceProps>  = ({ result }) => {
   return (

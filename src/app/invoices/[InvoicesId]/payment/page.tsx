@@ -14,10 +14,7 @@ import { createPaymentAction, updateStatusAction } from "@/app/action";
 
 const stripe = new Stripe(String(process.env.NEXT_PUBLIC_STRIPE_KEY));
 
-interface InvoicePageProps {
-  params: { invoicesId: string };
-  searchParams: Promise<{ status: string; session_id: string }>; // Updated to reflect the promise type
-}
+
 // After
 type Params = Promise<{ invoicesId: string }>;
 type SearchParams = Promise<{ session_id: string; status: string }>;
