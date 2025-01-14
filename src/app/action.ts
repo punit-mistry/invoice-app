@@ -49,13 +49,12 @@ export async function createAction(formData: FormData) {
     .returning({
       id: Invoice.id,
     });
-  const emailResult= await resend.emails.send({
+   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: [email],
     subject: "You have a new invoice !!",
     react: InvoiceCreatedEmail({ invoiceId: result[0].id }),
   });
-  console.log(emailResult);
   // if (error) {
   //   return res.status(400).json(error);
   // }
